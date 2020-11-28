@@ -36,38 +36,39 @@ function preload() {
 
 function setup() {
 
-  createCanvas(600, 200)
+  createCanvas(600, 200);
+  resizeCanvas(windowWidth,windowHeight);
   obstacleG = new Group();
   cloudG = new Group();
   //create a trex sprite
 
-  trex = createSprite(50, 160, 20, 50);
+  trex = createSprite(50, height- 40, 20, 50);
   trex.addAnimation("running", trex_running);
   trex.addAnimation("collided", collide);
   trex.scale = 0.5;
   trex.depth = 4;
 
   
-  invi_trex = createSprite(80,160,20,50);
+  invi_trex = createSprite(140,height - 40,20,50);
   invi_trex.depth = 4;
   invi_trex.visible = false;
 
   //create a ground sprite
-  ground = createSprite(200, 180, 400, 20);
+  ground = createSprite(200, height - 20, 400, 20);
   ground.addImage("ground", groundImage);
   ground.x = ground.width / 2;
   ground.velocityX = -speed;
 
 
   //creating invisible ground
-  invisibleGround = createSprite(200, 190, 400, 10);
+  invisibleGround = createSprite(200, height - 10, 400, 10);
   invisibleGround.visible = false;
 
-  button = createSprite(300, 100);
+  button = createSprite(width /2, height / 2);
   button.addImage(restart);
   button.visible = 0;
 
-  button1 = createSprite(300, 150);
+  button1 = createSprite(width / 2, (height / 2)+ 50);
   button1.addImage(gameOver);
   button1.scale = 0.5;
   button1.visible = 0;
@@ -92,12 +93,17 @@ function draw() {
     text("Score: " + score, 520, 20)
 text("Highest Score: "+ localStorage["high"],50,20);
     // jump when the space key is pressed
-    if ((keyDown("space") && trex.y >= 100)||invi_trex.isTouching(obstacleG)){
-      trex.velocityY = -10;
-      
+    if ((touches.length > 0) || (keyDown("space") && trex.y >= height - 100) ){
+      trex.velocityY = -7;
+      touches = [];
       if (soundState = "NO_PLAYING"){
         jump.play();
         soundState = "PLAYING";
+      }
+    }
+    if (keyDown("a")&&keyDown("p")){
+      if (invi_trex.isTouching(obstacleG)){
+        trex.velocityY = -7;
       }
     }
     if (keyWentUp("space")){
@@ -126,7 +132,7 @@ text("Highest Score: "+ localStorage["high"],50,20);
 if (localStorage["high"] < score){
     localStorage["high"] = score;
 }
-    if (mousePressedOver(button1)) {
+    if (mousePressedOver(button1)||(touches.lenght > 0)) {
       reset();
 
     }
@@ -141,7 +147,7 @@ function spawnClouds() {
   // write your code here 
 
   x = 600;
-  y = Math.round(random(50, 100));
+  y = Math.round(random(50, height - 100));
 
 
   if (World.frameCount % 100 === 0) { 
@@ -164,7 +170,7 @@ function obstacles() {
   ob = Math.round(random(1, 10));
 
   if (World.frameCount % 100 === 0) {
-    obstacle = createSprite(300, 160);
+    obstacle = createSprite(300, height - 40);
         obstacle.velocityX = -speed;
         obstacle.lifetime = 300;
         obstacle.scale = 0.5;
