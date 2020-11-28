@@ -90,8 +90,8 @@ function draw() {
     obstacles();
 
     //set background color
-    text("Score: " + score, 520, 20)
-text("Highest Score: "+ localStorage["high"],50,20);
+    text("Score: " + score, width - 40, 20)
+text("Highest Score: "+ localStorage["high"],width - 80,20);
     // jump when the space key is pressed
     if ((touches.length > 0) || (keyDown("space") && trex.y >= height - 100) ){
       trex.velocityY = -7;
