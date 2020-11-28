@@ -36,8 +36,8 @@ function preload() {
 
 function setup() {
 pixelDensity(0.7)
-  createCanvas(600, 200);
-  resizeCanvas(windowWidth,windowHeight);
+  createCanvas(windowWidth, windowHeight);
+  
   obstacleG = new Group();
   cloudG = new Group();
   //create a trex sprite
